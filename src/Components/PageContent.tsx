@@ -1,33 +1,26 @@
-import { useLocation, useParams } from 'react-router-dom';
-import { Tabs } from './Tabs';
-import { Title } from './Title';
+import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
+import { Tabs } from './Tabs';
 import { TabsContext } from './TabsContext';
 
 export const PageContent = () => {
   const tabs = useContext(TabsContext);
-  const { pathname } = useLocation();
   const { tabId } = useParams();
+
   const tab = tabs.find(t => t.id === tabId);
 
   return (
     <div className="section">
       <div className="container">
-        <Title />
+        <h1 className="title">Tabs page</h1>
 
-        {(pathname === '/tabs' || tabId) && <Tabs />}
+        <Tabs />
 
-        {pathname === '/tabs' && !tabId && (
-          <div className="block" data-cy="TabContent">
-            Please select a tab
-          </div>
-        )}
-
-        {tabId && (
-          <div className="block" data-cy="TabContent">
-            {tab?.content}
-          </div>
-        )}
+        <div className="block" data-cy="TabContent">
+          {!tabId && 'Please select a tab'}
+          {tabId && !tab && 'Please select a tab'}
+          {tab && tab.content}
+        </div>
       </div>
     </div>
   );
